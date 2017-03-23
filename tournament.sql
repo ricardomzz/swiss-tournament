@@ -10,6 +10,8 @@ DROP TABLE IF EXISTS players;
 DROP TABLE IF EXISTS matches;
 DROP TABLE IF EXISTS standings;
 DROP TABLE IF EXISTS pairings;
+DROP VIEW IF EXISTS wins;
+DROP VIEW IF EXISTS standings;
 
 CREATE TABLE players(
   id serial PRIMARY KEY,
@@ -21,3 +23,14 @@ CREATE TABLE matches(
   winner integer references players(id),
   loser integer references players(id)
 );
+
+
+CREATE VIEW wins AS SELECT winner as id, count(winner) from matches group by winner;
+
+CREATE VIEW losses AS SELECT loser as id, count(loser) from matches group by loser;
+
+--The standings view uses coalesce to ensure a value is always present
+--if a player has no matche or no wins the expression coalesces to 0
+CREATE VIEW standings as SELECT players.id, players.name,coalesce(wins.count,0)
+AS wins, coalesce(wins.count+losses.count,0) AS matches FROM players LEFT JOIN
+wins ON players.id = wins.id LEFT JOIN losses ON players.id = losses.id ORDER BY wins DESC;
