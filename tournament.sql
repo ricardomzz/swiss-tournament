@@ -33,4 +33,4 @@ CREATE VIEW losses AS SELECT loser as id, count(loser) from matches group by los
 --if a player has no matche or no wins the expression coalesces to 0
 CREATE VIEW standings as SELECT players.id, players.name,coalesce(wins.count,0)
 AS wins, coalesce(wins.count+losses.count,0) AS matches FROM players LEFT JOIN
-wins ON players.id = wins.id LEFT JOIN losses ON players.id = losses.id ORDER BY wins DESC;
+wins ON players.id = wins.id LEFT JOIN losses ON players.id = losses.id;

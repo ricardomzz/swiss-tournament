@@ -73,7 +73,7 @@ def playerStandings():
     """
     conn = connect()
     c = conn.cursor()
-    c.execute("SELECT * FROM standings")
+    c.execute("SELECT * FROM standings ORDER BY wins DESC")
     result = [row for row in c.fetchall()]
     conn.close()
     return result
@@ -108,3 +108,15 @@ def swissPairings():
         id2: the second player's unique id
         name2: the second player's name
     """
+    standings=playerStandings()
+    games = []
+
+    #iterate through standings 2 steps at a time:
+    for g in xrange(0,len(standings),2):
+
+        games.append((standings[g][0], #id1
+                        standings[g][1], #name1
+                        standings[g+1][0], #id2
+                        standings[g+1][1])) #name2
+
+    return games
