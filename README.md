@@ -1,7 +1,7 @@
-#Swiss-Tournament
+# Swiss-Tournament
 Swiss-Tournament is A program to manage a Swiss-system tournament built on Python and PostgreSQL.
 
-#Instructions
+# Instructions
 
 To run this program:
 
